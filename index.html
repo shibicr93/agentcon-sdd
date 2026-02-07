@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgentCon SDD — Petstore Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 60px 40px;
+            max-width: 800px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 4rem;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 2rem;
+            color: #666;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+        
+        .description {
+            font-size: 1.5rem;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 50px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 20px 40px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .copy-section {
+            background: #f9f9f9;
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 30px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .copy-label {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .copy-box {
+            background: white;
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 1.3rem;
+            color: #333;
+            overflow-x: auto;
+            margin-bottom: 15px;
+            word-break: break-all;
+        }
+        
+        .copy-btn {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background: #5568d3;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+            font-size: 1.1rem;
+            color: #999;
+        }
+        
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌱 AgentCon SDD</h1>
+        <p class="subtitle">Petstore Demo with Spec-Driven Development</p>
+        
+        <p class="description">
+            Build a Petstore API using <strong>Spec Kit</strong> and <strong>Spec-Driven Development</strong>.<br>
+            Follow the OpenAPI 3.0 specification at <a href="https://petstore3.swagger.io/" style="color: #667eea;">petstore3.swagger.io</a>
+        </p>
+        
+        <div class="button-group">
+            <a href="https://github.com/github/spec-kit" class="btn btn-primary" target="_blank">Learn Spec Kit</a>
+            <a href="https://github.com/shibicr93/agentcon-sdd" class="btn btn-secondary" target="_blank">View on GitHub</a>
+        </div>
+        
+        <div class="copy-section">
+            <p class="copy-label">Clone this repo:</p>
+            <div class="copy-box" id="cloneBox">git clone https://github.com/shibicr93/agentcon-sdd.git && cd agentcon-sdd</div>
+            <button class="copy-btn" onclick="copyToClipboard('cloneBox')">📋 Copy</button>
+        </div>
+        
+        <div class="copy-section">
+            <p class="copy-label">Or fork on GitHub:</p>
+            <a href="https://github.com/shibicr93/agentcon-sdd/fork" class="btn btn-primary" target="_blank">🍴 Fork Repository</a>
+        </div>
+        
+        <div class="footer">
+            <p>📚 <a href="https://github.com/shibicr93/agentcon-sdd#readme">Read Setup Instructions</a></p>
+            <p style="margin-top: 15px;">Powered by <a href="https://github.com/github/spec-kit">Spec Kit</a></p>
+        </div>
+    </div>
+    
+    <script>
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target;
+                const original = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    btn.textContent = original;
+                }, 2000);
+            }).catch(err => {
+                alert('Failed to copy: ' + err);
+            });
+        }
+    </script>
+</body>
+</html>
