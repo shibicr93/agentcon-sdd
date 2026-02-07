@@ -20,11 +20,24 @@ specify init --here --ai <your-agent>
 ```
 
 ## Run the SDD flow (in your agent chat)
+
 ```
-/speckit.constitution
-/speckit.specify
-/speckit.plan
+/speckit.constitution Strict OpenAPI 3.0 spec adherence (https://petstore3.swagger.io/api/v3/openapi.json). All endpoints, schemas, and responses must match the spec exactly. Test-first development. Direct framework usage, no unnecessary abstractions.
+```
+
+```
+/speckit.specify Build a pet store API where users can browse available pets by category, add pets to a shopping cart, and place orders. Admin users can manage pet inventory and status.
+```
+
+```
+/speckit.plan Node.js with Express, PostgreSQL for persistence, Jest for testing. Minimal middleware, direct OpenAPI spec adherence.
+```
+
+```
 /speckit.tasks
+```
+
+```
 /speckit.implement
 ```
 
