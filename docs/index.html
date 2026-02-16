@@ -1,185 +1,1281 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgentCon SDD — Petstore Demo</title>
+    <title>The Spec-Anchored Mandate: Stop "Vibe Coding" and Start Engineering | AgentCon Istanbul</title>
+    
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/theme/black.css" id="theme">
+    
+    <!-- Syntax highlighting - High Contrast Theme -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/a11y-dark.css">
+    
+    <!-- Feather Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+    <!-- Custom styles -->
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            /* Color Palette */
+            --color-navy: #1e3a8a;
+            --color-navy-light: #3b82f6;
+            --color-red: #dc2626;
+            --color-red-light: #ef4444;
+            --color-green: #16a34a;
+            --color-green-light: #22c55e;
+            --color-gray: #64748b;
+            --color-gray-light: #94a3b8;
+            --color-white: #ffffff;
+            --color-dark: #0f172a;
         }
         
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+        .reveal {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-dark);
+        }
+        
+        .reveal h1, .reveal h2, .reveal h3 {
+            font-family: 'Montserrat', 'Inter', sans-serif;
+            font-weight: 700;
+            text-transform: none;
+        }
+        
+        .reveal h1 {
+            font-size: 2.5em;
+            color: var(--color-white);
+        }
+        
+        .reveal h2 {
+            font-size: 2em;
+            color: var(--color-navy-light);
+        }
+        
+        .reveal h3 {
+            font-size: 1.5em;
+            color: var(--color-gray-light);
+        }
+        
+        /* Code blocks */
+        .reveal pre {
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            border: 1px solid var(--color-gray);
+        }
+        
+        .reveal code {
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 1.1em; /* Increased font size for readability */
+            line-height: 1.5;
+            max-height: 600px;
+        }
+
+        .reveal pre code {
+            display: block;
+            padding: 12px 16px;
+        }
+        
+        /* Vulnerable code highlighting */
+        .code-vulnerable {
+            background-color: rgba(220, 38, 38, 0.2);
+            border-left: 4px solid var(--color-red);
+            padding-left: 8px;
+        }
+        
+        /* Icon containers */
+        .icon-large {
+            width: 128px;
+            height: 128px;
+            color: var(--color-navy-light);
+        }
+        
+        .icon-medium {
+            width: 64px;
+            height: 64px;
+        }
+        
+        .icon-small {
+            width: 32px;
+            height: 32px;
+        }
+        
+        /* Split layout */
+        .split-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+        }
+        
+        .split-left, .split-right {
+            flex: 1;
+        }
+        
+        /* Problem/Solution cards */
+        .problem-card {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(239, 68, 68, 0.05));
+            border-left: 6px solid var(--color-red);
+            padding: 30px;
+            border-radius: 8px;
+        }
+        
+        .solution-card {
+            background: linear-gradient(135deg, rgba(22, 163, 74, 0.1), rgba(34, 197, 94, 0.05));
+            border-left: 6px solid var(--color-green);
+            padding: 30px;
+            border-radius: 8px;
+        }
+        
+        /* Stats display */
+        .stat-large {
+            font-size: 3em;
+            font-weight: 700;
+            color: var(--color-red-light);
+            margin: 20px 0;
+        }
+        
+        .stat-citation {
+            font-size: 0.6em;
+            color: var(--color-gray-light);
+            font-style: italic;
+        }
+        
+        /* Stack diagram */
+        .stack-layer {
+            background: rgba(59, 130, 246, 0.1);
+            border: 2px solid var(--color-navy-light);
+            border-radius: 8px;
+            padding: 12px 20px;
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .stack-layer:hover {
+            transform: translateX(10px);
+            background: rgba(59, 130, 246, 0.2);
+        }
+        
+        .stack-arrow {
+            text-align: center;
+            color: var(--color-navy-light);
+            font-size: 1.2em;
+            margin: -2px 0;
+            line-height: 1;
+        }
+
+        .stack-slide .icon-medium {
+            width: 48px;
+            height: 48px;
+        }
+
+        .stack-slide .stack-arrow {
+            font-size: 1.0em;
+            margin: -4px 0;
+        }
+        
+        /* Three columns layout */
+        .three-columns {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .column-card {
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .column-card:hover {
+            transform: translateY(-10px);
+            background: rgba(59, 130, 246, 0.2);
+        }
+        
+        /* Badge styling */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--color-navy);
+            padding: 15px 25px;
+            border-radius: 50px;
+            margin: 10px;
+            font-size: 0.9em;
+        }
+        
+        /* Action cards */
+        .action-card {
+            background: linear-gradient(135deg, var(--color-navy), var(--color-navy-light));
+            padding: 25px;
+            border-radius: 12px;
+            text-align: left;
+            transition: transform 0.3s ease;
+        }
+        
+        .action-card:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Comparison table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .comparison-table th {
+            background: var(--color-navy);
+            padding: 15px;
+            font-weight: 700;
+            border: 1px solid var(--color-navy-light);
+        }
+        
+        .comparison-table td {
+            padding: 15px;
+            border: 1px solid var(--color-gray);
+        }
+        
+        .comparison-table tr.highlight {
+            background: rgba(59, 130, 246, 0.2);
+        }
+        
+        /* Slido embed container */
+        .slido-container {
+            width: 100%;
+            height: 500px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .qr-code.poll-qr {
+            width: 420px;
+            height: 420px;
+        }
+        
+        /* Timeline */
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 40px 0;
+            position: relative;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--color-navy-light);
+            z-index: -1;
+        }
+        
+        .timeline-item {
+            background: var(--color-dark);
+            padding: 20px;
+            border-radius: 8px;
+            border: 3px solid var(--color-navy-light);
+            text-align: center;
+            min-width: 120px;
+        }
+        
+        /* Flow diagram */
+        .flow-diagram {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 40px 20px;
-        }
-        
-        .container {
-            text-align: center;
-            max-width: 1000px;
-        }
-        
-        h1 {
-            font-size: 5rem;
-            color: white;
-            margin-bottom: 30px;
-            font-weight: 700;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
-        
-        .url-box {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            margin: 40px 0;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-        
-        .url-label {
-            font-size: 2rem;
-            color: #667eea;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-        
-        .url-text {
-            font-size: 4rem;
-            color: #333;
-            font-family: 'Monaco', 'Courier New', monospace;
-            font-weight: 700;
-            word-break: break-word;
-            line-height: 1.4;
-        }
-        
-        .button-group {
-            display: flex;
             gap: 30px;
-            justify-content: center;
-            margin-top: 40px;
-            flex-wrap: wrap;
+            margin: 40px 0;
         }
         
-        .btn {
-            display: inline-block;
-            padding: 25px 50px;
-            font-size: 2rem;
-            font-weight: 700;
-            text-decoration: none;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
+        .flow-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 2px solid var(--color-navy-light);
+            border-radius: 8px;
+            padding: 30px;
+            min-width: 200px;
         }
         
-        .btn-primary {
-            background: white;
-            color: #667eea;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        .flow-arrow {
+            font-size: 2em;
+            color: var(--color-navy-light);
         }
         
-        .btn-primary:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-        }
+        /* Utility classes */
+        .text-navy { color: var(--color-navy-light); }
+        .text-red { color: var(--color-red-light); }
+        .text-green { color: var(--color-green-light); }
+        .text-gray { color: var(--color-gray-light); }
         
-        .qr-modal {
+        .bg-navy { background-color: var(--color-navy); }
+        .bg-red { background-color: rgba(220, 38, 38, 0.2); }
+        .bg-green { background-color: rgba(22, 163, 74, 0.2); }
+        
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .text-right { text-align: right; }
+        
+        .mt-1 { margin-top: 1rem; }
+        .mt-2 { margin-top: 2rem; }
+        .mb-1 { margin-bottom: 1rem; }
+        .mb-2 { margin-bottom: 2rem; }
+
+        /* Footer sticker logo */
+        .reveal::after {
+            content: '';
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 60px;
+            height: 60px;
+            background-image: url('assets/agentcon_sticker.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        /* Hide sticker on title slide */
+        .reveal .title-slide::after {
+            display: none;
+        }
+
+        /* Modal styles for pillar examples */
+        .pillar-modal {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.9);
             align-items: center;
             justify-content: center;
-            z-index: 1000;
+            z-index: 10000;
         }
         
-        .qr-modal.open {
+        .pillar-modal.open {
             display: flex;
         }
         
-        .qr-content {
-            background: white;
-            padding: 40px;
+        .pillar-modal-content {
+            background: var(--color-dark);
+            border: 3px solid var(--color-navy);
             border-radius: 12px;
-            text-align: center;
-            max-width: 500px;
+            padding: 50px 60px;
+            max-width: 900px;
+            max-height: 85vh;
+            overflow-y: auto;
+            color: var(--color-white);
+            position: relative;
         }
         
-        .qr-content img {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 20px;
+        .pillar-modal-header {
+            font-size: 3em;
+            color: var(--color-navy-light);
+            margin-bottom: 30px;
+            font-weight: 700;
         }
         
-        .qr-close {
-            background: #667eea;
-            color: white;
-            padding: 12px 24px;
+        .pillar-modal-content h4 {
+            font-size: 1.8em;
+            margin-top: 25px;
+        }
+        
+        .pillar-modal-content p {
+            font-size: 1.3em;
+            line-height: 1.8;
+        }
+        
+        .pillar-modal-content pre {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        
+        .pillar-modal-content ul {
+            font-size: 1.3em;
+            line-height: 1.8;
+        }
+        
+        .pillar-modal-close {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: var(--color-red);
             border: none;
-            border-radius: 6px;
-            font-size: 1rem;
+            color: white;
+            font-size: 2em;
             cursor: pointer;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             transition: background 0.3s;
         }
         
-        .qr-close:hover {
-            background: #5568d3;
+        .pillar-modal-close:hover {
+            background: var(--color-red-light);
         }
         
-        .feedback-btn {
-            background: #764ba2;
+        /* Make pillar cards clickable */
+        .column-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
         
-        .feedback-btn:hover {
-            background: #653a8a;
+        .column-card:hover {
+            transform: scale(1.05);
+            border-color: var(--color-navy-light);
+            box-shadow: 0 0 20px rgba(30, 58, 138, 0.5);
+        }
+        
+        .column-card[data-pillar] {
+            user-select: none;
         }
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>🌱 AgentCon SDD</h1>
-        
-        <div class="url-box">
-            <div class="url-label">Repository:</div>
-            <div class="url-text">github.com/shibicr93/agentcon-sdd</div>
-        </div>
-        
-        <div class="button-group">
-            <a href="https://github.com/shibicr93/agentcon-sdd" class="btn btn-primary" target="_blank">📖 View Repo</a>
-            <a href="https://github.com/shibicr93/agentcon-sdd/fork" class="btn btn-primary" target="_blank">🍴 Fork</a>
-            <button onclick="toggleQR()" class="btn btn-primary feedback-btn">📝 Feedback</button>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- Slides will be added here section by section -->
+            
+            <!-- Section 1: Opening (Slides 1-3) -->
+            <section>
+                <h1>The Spec-Anchored Mandate</h1>
+                <h3>Stop "Vibe Coding" and Start Engineering</h3>
+                <div class="mt-2">
+                    <p class="text-gray">AgentCon Istanbul • 7 February 2026</p>
+                    <p class="text-gray">Shibi Ramachandran • Senior Software Engineer</p>
+                </div>
+                <aside class="notes">
+                    Today I’m making a simple promise: we can have AI-speed delivery without the reliability hangover. The arc is straightforward: we’ll see where “vibe coding” fails, why Spec-Driven Development (SDD) exists, and how to operationalize it.
+                </aside>
+            </section>
+
+            <section>
+                <div class="split-container">
+                    <div class="split-left text-center">
+                        <i data-feather="zap" class="icon-large text-navy"></i>
+                        <h3 class="mt-1">50 lines / second</h3>
+                        <p class="text-gray">AI speed</p>
+                    </div>
+                    <div class="split-right text-center">
+                        <i data-feather="clock" class="icon-large text-red"></i>
+                        <h3 class="mt-1">Hours debugging</h3>
+                        <p class="text-gray">Hidden cost</p>
+                    </div>
+                </div>
+                <div class="stat-large">37–60%</div>
+                <p class="text-gray">“Secure” AI code is non-functional</p>
+                <p class="stat-citation">CIPHER study (2026)</p>
+                <aside class="notes">
+                    AI can write ~50 lines a second, but we spend hours debugging what it produced. In fact, the CIPHER study shows 37–60% of “secure” AI code doesn’t even run. Speed without guardrails doesn’t just slow us down—it creates risk.
+                </aside>
+            </section>
+
+            <!-- Slide 3: Poll Voting -->
+            <section>
+                <h2>Poll: AI-Generated Code in Production</h2>
+                <div class="split-container mt-2">
+                    <div class="split-left text-center">
+                        <div class="qr-code poll-qr" style="margin: 0 auto;">
+                            <img src="assets/slido_qr_code.png" alt="Slido QR code" style="width: 100%; height: 100%; object-fit: contain;">
+                        </div>
+                        <p class="text-gray mt-1">Scan to vote</p>
+                    </div>
+                    <div class="split-right text-left">
+                        <h3 class="text-navy">The Question:</h3>
+                        <p style="font-size: 1.5em; font-weight: bold;">Have you shipped AI-generated code that broke in production?</p>
+                        
+                        <div class="mt-2">
+                            <p class="fragment"><span class="badge">1</span> Yes, and it was painful</p>
+                            <p class="fragment"><span class="badge">2</span> Yes, but caught it quickly</p>
+                            <p class="fragment"><span class="badge">3</span> No, we verify everything</p>
+                        </div>
+                        
+                        <p class="mt-2 text-gray"><i data-feather="message-circle" class="icon-small" style="vertical-align: middle;"></i> Vibe coding = prompt → paste → pray</p>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Quick show of hands—have you shipped AI code that broke in production? This is the moment where we stop pretending the risk is theoretical. “Vibe coding” is just prompt → paste → pray.
+                </aside>
+            </section>
+
+            <!-- Slide 4: Poll Results -->
+            <section>
+                <h3>Live Results</h3>
+                <div class="slido-container" style="height: 700px;">
+                    <iframe src="https://app.sli.do/event/b7B4UK1gnbGf7Y9xn868yD" style="width:100%; height:100%; border:0;"></iframe>
+                </div>
+                <aside class="notes">
+                    Let’s use the room. If many of you have shipped breakage, you’re not alone. If not, that’s not a victory—that’s a warning that risk grows with scale.
+                </aside>
+            </section>
+
+            <!-- Section 2: Act I — Governance Stack Evolution (Slides 5-7) -->
+            
+            <!-- Slide 5: Two-Column Stack Diagram -->
+            <section class="stack-slide">
+                <h2>The Governance Stack</h2>
+                <div class="split-container" style="max-width: 1100px; margin: 0 auto; align-items: flex-start;">
+                    <div class="split-left">
+                        <div class="stack-layer fragment fade-down" data-fragment-index="5">
+                            <i data-feather="layout" class="icon-medium text-navy"></i>
+                            <div>
+                                <h4>SDD: Spec-Driven Development</h4>
+                                <p class="text-gray" style="margin:0;">2025+ • Spec as Source</p>
+                            </div>
+                        </div>
+                        <div class="stack-arrow fragment fade-in" data-fragment-index="5">↓ constrains</div>
+                        
+                        <div class="stack-layer fragment fade-down" data-fragment-index="4">
+                            <i data-feather="file-code" class="icon-medium text-green"></i>
+                            <div>
+                                <h4>CDD: Contract-Driven Development</h4>
+                                <p class="text-gray" style="margin:0;">2015+ • OpenAPI / AsyncAPI</p>
+                            </div>
+                        </div>
+                        <div class="stack-arrow fragment fade-in" data-fragment-index="4">↓ constrains</div>
+
+                        <div class="stack-layer fragment fade-down" data-fragment-index="3">
+                            <i data-feather="message-square" class="icon-medium text-red"></i>
+                            <div>
+                                <h4>BDD: Behavior-Driven Development</h4>
+                                <p class="text-gray" style="margin:0;">2010s • Given-When-Then</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="split-right">
+                        <div class="stack-layer fragment fade-down" data-fragment-index="2">
+                            <i data-feather="check-circle" class="icon-medium text-navy"></i>
+                            <div>
+                                <h4>TDD: Test-Driven Development</h4>
+                                <p class="text-gray" style="margin:0;">2000s • Red-Green-Refactor</p>
+                            </div>
+                        </div>
+                        <div class="stack-arrow fragment fade-in" data-fragment-index="2">↓ constrains</div>
+
+                        <div class="stack-layer fragment fade-down" data-fragment-index="1">
+                            <i data-feather="file-text" class="icon-medium text-gray"></i>
+                            <div>
+                                <h4>Code Implementation</h4>
+                                <p class="text-gray" style="margin:0;">Foundational Reality</p>
+                            </div>
+                        </div>
+                        <p class="text-gray mt-1" style="font-size: 0.9em;">Each layer constrains the one below.</p>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Every era added constraints. TDD constrained implementation, BDD constrained behavior, CDD constrained interfaces. SDD inherits them all—and puts the spec at the top.
+                </aside>
+            </section>
+
+            <!-- Slide 6: Timeline Visualization -->
+            <section>
+                <h2>Paradigm Evolution</h2>
+                <div class="timeline mt-2">
+                    <div class="timeline-item fragment fade-up">
+                        <h4 class="text-navy">2000s</h4>
+                        <p>TDD</p>
+                        <i data-feather="check-circle" class="icon-small"></i>
+                    </div>
+                    <div class="timeline-item fragment fade-up">
+                        <h4 class="text-red">2010s</h4>
+                        <p>BDD</p>
+                        <i data-feather="message-square" class="icon-small"></i>
+                    </div>
+                    <div class="timeline-item fragment fade-up">
+                        <h4 class="text-green">2015+</h4>
+                        <p>CDD</p>
+                        <i data-feather="file-code" class="icon-small"></i>
+                    </div>
+                    <div class="timeline-item fragment fade-up" style="transform: scale(1.2); border-color: var(--color-white);">
+                        <h4 class="text-white">2025+</h4>
+                        <p>SDD</p>
+                        <i data-feather="layout" class="icon-small"></i>
+                    </div>
+                </div>
+                <div class="mt-2 fragment fade-in">
+                    <p class="text-gray">From verifying <span class="text-white">functionality</span> to enforcing <span class="text-white">correctness by design</span></p>
+                </div>
+                <aside class="notes">
+                    We moved from asking “does it work?” to “should it exist?” SDD shifts correctness left.
+                </aside>
+            </section>
+
+            <!-- Slide 7: Key Insight -->
+            <section>
+                <div class="action-card text-center" style="max-width: 900px; margin: 0 auto;">
+                    <i data-feather="shield" class="icon-large text-white mb-1"></i>
+                    <h2 class="text-white">The Inheritance Principle</h2>
+                    <hr style="border-color: rgba(255,255,255,0.2); width: 50%;">
+                    <h3 class="mt-1" style="color: rgba(255,255,255,0.9); line-height: 1.4;">
+                        "Each paradigm inherited constraints from its predecessors. <br>
+                        <span class="text-navy" style="background: white; padding: 0 10px;">SDD inherits them all.</span>"
+                    </h3>
+                </div>
+                <aside class="notes">
+                    This is the thesis: SDD doesn’t replace earlier paradigms. It absorbs them, so AI can’t “cheat” its way around guardrails.
+                </aside>
+            </section>
+
+            <!-- Section 3: Act II — Five Failure Stories (Slides 8-17) -->
+            
+            <section class="text-center">
+                <h2>Act II: The "Vibe Coding" Reality</h2>
+                <h3 class="text-gray">Five ways AI generates technically correct,<br>operationally fatal code.</h3>
+                <aside class="notes">
+                    Now the uncomfortable truth: AI can generate technically correct code that is operationally fatal.
+                </aside>
+            </section>
+
+            <!-- Failure #1: Resource Leak -->
+            <section>
+                <div class="split-container">
+                    <div class="split-left">
+                        <h3>1. The Resource Leak</h3>
+                        <pre><code class="language-java" data-line-numbers="2-7">public void handle(Socket sock) {
+    try {
+        InputStream in = sock.getInputStream();
+        // ... processing ...
+        // Missing finally block!
+    } catch (IOException e) {
+        log.error(e);
+    }
+}</code></pre>
+                        <div class="problem-card mt-1 fragment">
+                            <i data-feather="alert-triangle" class="text-red"></i>
+                            <strong>Impact:</strong> File descriptor exhaustion → System crash in 4h
+                        </div>
+                    </div>
+                    <div class="split-right">
+                        <div class="solution-card fragment">
+                            <i data-feather="check-circle" class="text-green icon-medium"></i>
+                            <h4 class="text-green">The SDD Fix</h4>
+                            <p><strong>Rule: RESOURCE_CONTRACT</strong></p>
+                            <p>Enforce <code>try-with-resources</code> for all AutoCloseable types.</p>
+                            <pre><code class="language-java">try (InputStream in = ...) {
+   // Safe by definition
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">
+                    It works in tests, fails under load. A missing finally kills the service in 4 hours. SDD fixes it with RESOURCE_CONTRACT: all AutoCloseable types must be try-with-resources.
+                </aside>
+            </section>
+
+            <!-- Failure #2: Crypto Fail -->
+            <section>
+                <div class="split-container">
+                    <div class="split-left">
+                        <h3>2. The Crypto Fail</h3>
+                        <pre><code class="language-java" data-line-numbers="4-5">public byte[] encrypt(String data) {
+    Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+    // STATIC IV - FATAL VULNERABILITY
+    byte[] iv = new byte[16]; // all zeros
+    c.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv));
+    return c.doFinal(data.getBytes());
+}</code></pre>
+                        <div class="problem-card mt-1 fragment">
+                            <i data-feather="unlock" class="text-red"></i>
+                            <strong>Impact:</strong> Semantic Security broken. All messages compromised.
+                        </div>
+                    </div>
+                    <div class="split-right">
+                        <div class="solution-card fragment">
+                            <i data-feather="lock" class="text-green icon-medium"></i>
+                            <h4 class="text-green">The SDD Fix</h4>
+                            <p><strong>Rule: CRYPTO_CONTRACT</strong></p>
+                            <p>Forbid <code>new byte[]</code> for IVs. Require <code>SecureRandom</code>.</p>
+                            <p class="text-gray text-small">mandates GCM/AEAD over CBC</p>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">
+                    A static IV makes encryption useless. SDD’s CRYPTO_CONTRACT forbids new byte[] IVs and mandates AEAD.
+                </aside>
+            </section>
+
+            <!-- Failure #3: SQL Injection -->
+            <section>
+                <div class="split-container">
+                    <div class="split-left">
+                        <h3>3. The Injection</h3>
+                        <pre><code class="language-java" data-line-numbers="2">public User login(String u, String p) {
+    // VULNERABLE: Direct concatenation
+    String sql = "SELECT * FROM users WHERE user='" + u + "'";
+    return db.query(sql);
+}</code></pre>
+                        <div class="problem-card mt-1 fragment">
+                            <i data-feather="database" class="text-red"></i>
+                            <strong>Impact:</strong> <code>' OR '1'='1</code> dumps entire user database.
+                        </div>
+                    </div>
+                    <div class="split-right">
+                        <div class="solution-card fragment">
+                            <i data-feather="shield" class="text-green icon-medium"></i>
+                            <h4 class="text-green">The SDD Fix</h4>
+                            <p><strong>Rule: SECURITY_CONTRACT</strong></p>
+                            <p>Zero tolerance for string concat in SQL. Mandate <code>PreparedStatement</code>.</p>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">
+                    This is the classic AI bug. SDD’s SECURITY_CONTRACT bans SQL string concatenation, period.
+                </aside>
+            </section>
+
+            <!-- Failure #4: N+1 Query -->
+            <section>
+                <div class="split-container">
+                    <div class="split-left">
+                        <h3>4. The N+1 Disaster</h3>
+                        <pre><code class="language-java" data-line-numbers="2-5">List&lt;Order&gt; orders = repo.findAll();
+for (Order o : orders) {
+    // Executes 1 query PER ORDER
+    User u = userRepo.findById(o.getUserId());
+    dtos.add(new OrderDTO(o, u));
+}</code></pre>
+                        <div class="problem-card mt-1 fragment">
+                            <i data-feather="server" class="text-red"></i>
+                            <strong>Impact:</strong> 10k users = 10,001 queries. 30s page load.
+                        </div>
+                    </div>
+                    <div class="split-right">
+                        <div class="solution-card fragment">
+                            <i data-feather="activity" class="text-green icon-medium"></i>
+                            <h4 class="text-green">The SDD Fix</h4>
+                            <p><strong>Rule: PERFORMANCE_CONTRACT</strong></p>
+                            <p>Max query budget: 5 per operation.</p>
+                            <p><i>Detector forces <code>JOIN</code> or <code>batch fetch</code>.</i></p>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Correct code can still be fatal to latency. PERFORMANCE_CONTRACT enforces a query budget and forces JOIN or batching.
+                </aside>
+            </section>
+
+            <!-- Failure #5: Memory Leak -->
+            <section>
+                <div class="split-container">
+                    <div class="split-left">
+                        <h3>5. The Memory Leak</h3>
+                        <pre><code class="language-java" data-line-numbers="2">public class Cache {
+    // Unbounded static map
+    private static final Map&lt;String,Object&gt; map = new HashMap&lt;&gt;();
+    
+    public static void put(String k, Object v) {
+        map.put(k, v);
+    }
+}</code></pre>
+                        <div class="problem-card mt-1 fragment">
+                            <i data-feather="hard-drive" class="text-red"></i>
+                            <strong>Impact:</strong> <code>OutOfMemoryError</code> after 3 days uptime.
+                        </div>
+                    </div>
+                    <div class="split-right">
+                        <div class="solution-card fragment">
+                            <i data-feather="trash-2" class="text-green icon-medium"></i>
+                            <h4 class="text-green">The SDD Fix</h4>
+                            <p><strong>Rule: MEMORY_CONTRACT</strong></p>
+                            <p>Static collections must have eviction policies (LRU/TTL).</p>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Static caches feel harmless until they crash prod. MEMORY_CONTRACT requires eviction policies.
+                </aside>
+            </section>
+
+            <!-- Section 4: Framework Convergence -->
+            
+            <!-- Slide: Poll #2 -->
+            <section>
+                <h2>Poll: The SDD Landscape</h2>
+                <div class="split-container mt-2">
+                    <div class="split-left text-center">
+                        <div class="qr-code poll-qr" style="margin: 0 auto;">
+                            <img src="assets/slido_qr_code.png" alt="Slido QR code" style="width: 100%; height: 100%; object-fit: contain;">
+                        </div>
+                        <p class="text-gray mt-1">Scan to vote</p>
+                    </div>
+                    <div class="split-right text-left">
+                        <h3 class="text-navy">Which framework have you heard of?</h3>
+                        <div class="mt-2" style="font-size: 1.3em;">
+                            <p class="fragment fade-up"><i data-feather="box" class="text-navy icon-small"></i> spec-kit</p>
+                            <p class="fragment fade-up"><i data-feather="box" class="text-gray icon-small"></i> Tessl</p>
+                            <p class="fragment fade-up"><i data-feather="box" class="text-gray icon-small"></i> BMAD</p>
+                            <p class="fragment fade-up"><i data-feather="box" class="text-gray icon-small"></i> OpenSpec</p>
+                            <p class="fragment fade-up"><i data-feather="x" class="text-red icon-small"></i> None / "I write my own prompts"</p>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Quick show of hands. This sets up the convergence story: the ecosystem is still fragmented, but the process is aligning.
+                </aside>
+            </section>
+
+            <!-- Slide 4b: Poll Results #2 -->
+            <section>
+                <h3>Live Results</h3>
+                <div class="slido-container" style="height: 700px;">
+                    <iframe src="https://app.sli.do/event/b7B4UK1gnbGf7Y9xn868yD" style="width:100%; height:100%; border:0;"></iframe>
+                </div>
+                <aside class="notes">
+                    Comment on the distribution. The ecosystem is still fragmented—but the workflow is converging.
+                </aside>
+            </section>
+
+            <!-- Slide: Convergence Diagram -->
+            <section>
+                <h2>The Great Convergence</h2>
+                <p class="text-gray">The industry is coalescing around a single truth.</p>
+                
+                <div class="flow-diagram fragment fade-in">
+                    <div class="flow-box">
+                        <i data-feather="file-text" class="icon-medium text-navy"></i>
+                        <h4>Spec</h4>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box">
+                        <i data-feather="map" class="icon-medium text-navy"></i>
+                        <h4>Plan</h4>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box">
+                        <i data-feather="code" class="icon-medium text-navy"></i>
+                        <h4>Implement</h4>
+                    </div>
+                </div>
+
+                <div class="three-columns mt-2">
+                    <div class="column-card fragment fade-up">
+                        <h4 class="text-navy">Tessl</h4>
+                        <p class="text-small">"Spec as source of truth"</p>
+                    </div>
+                    <div class="column-card fragment fade-up">
+                        <h4 class="text-navy">OpenSpec</h4>
+                        <p class="text-small">"Standardized intent"</p>
+                    </div>
+                    <div class="column-card fragment fade-up">
+                        <h4 class="text-navy">spec-kit</h4>
+                        <p class="text-small">"Executable specifications"</p>
+                    </div>
+                </div>
+                <aside class="notes">
+                    The industry is converging on the same flow: Spec → Plan → Implement. Different tools, same truth.
+                </aside>
+            </section>
+
+            <!-- Slide: Comparison Table -->
+            <section>
+                <h2>Landscape Comparison</h2>
+                <table class="comparison-table mt-1">
+                    <thead>
+                        <tr>
+                            <th>Framework</th>
+                            <th>Philosophy</th>
+                            <th>Workflow</th>
+                            <th>Target</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="fragment fade-in">
+                            <td><strong>Tessl</strong></td>
+                            <td><i data-feather="server" class="text-gray"></i> Platform</td>
+                            <td>Cloud-managed</td>
+                            <td>Enterprise</td>
+                        </tr>
+                        <tr class="fragment fade-in">
+                            <td><strong>BMAD</strong></td>
+                            <td><i data-feather="cpu" class="text-gray"></i> Agentic</td>
+                            <td>Autonomous</td>
+                            <td>Researchers</td>
+                        </tr>
+                        <tr class="fragment fade-in highlight">
+                            <td><strong class="text-navy">spec-kit</strong></td>
+                            <td><i data-feather="tool" class="text-navy"></i> <strong>Toolchain</strong></td>
+                            <td><strong>Local-first</strong></td>
+                            <td><strong>Engineers</strong></td>
+                        </tr>
+                        <tr class="fragment fade-in">
+                            <td><strong>OpenSpec</strong></td>
+                            <td><i data-feather="file-text" class="text-gray"></i> Standard</td>
+                            <td>Format-only</td>
+                            <td>Tool Builders</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="fragment fade-up action-card mt-2 text-center" style="max-width: 600px; margin: 0 auto;">
+                     <h3 class="text-white" style="margin:0;">Why spec-kit?</h3>
+                     <p class="text-white" style="margin:5px 0 0 0;">The only local-first, IDE-native implementation you can run today.</p>
+                </div>
+                <aside class="notes">
+                    Spec-kit stands out because it’s local-first and IDE-native. No platform lock-in, no hand-wavy process.
+                </aside>
+            </section>
+
+            <!-- Section 5: Act III — Three Pillars (Slides 22-25) -->
+            
+            <section class="text-center">
+                <h2>Act III: The Three Pillars of SDD</h2>
+                <h3 class="text-gray">Architecture for the Age of Agents</h3>
+                <aside class="notes">
+                    SDD becomes real when teams operationalize it.
+                </aside>
+            </section>
+
+            <!-- Slide: Three Pillars Overview -->
+            <section>
+                <h2>The SDD Triad</h2>
+                <div class="three-columns mt-2">
+                    <div class="column-card fragment fade-up" data-pillar="constitution" onclick="openPillarModal('constitution')">
+                        <i data-feather="book-open" class="icon-large text-navy"></i>
+                        <h3 class="mt-1">1. The Constitution</h3>
+                        <p class="text-gray">The "Why" & "How"</p>
+                        <p class="text-small">Architectural laws that never change. The bounds of permissible code.</p>
+                        <button style="background: transparent; border: none; font-size: 2em; cursor: pointer; margin-top: 10px;" onclick="openPillarModal('constitution')">💡</button>
+                    </div>
+                    <div class="column-card fragment fade-up" data-pillar="contracts" onclick="openPillarModal('contracts')">
+                        <i data-feather="file-text" class="icon-large text-navy"></i>
+                        <h3 class="mt-1">2. Contracts</h3>
+                        <p class="text-gray">The "What"</p>
+                        <p class="text-small">Formal schemas (OpenAPI, AsyncAPI) derived from requirements, not code.</p>
+                        <button style="background: transparent; border: none; font-size: 2em; cursor: pointer; margin-top: 10px;" onclick="openPillarModal('contracts')">💡</button>
+                    </div>
+                    <div class="column-card fragment fade-up" data-pillar="gates" onclick="openPillarModal('gates')">
+                        <i data-feather="check-square" class="icon-large text-navy"></i>
+                        <h3 class="mt-1">3. Guardrails & Gates</h3>
+                        <p class="text-gray">The "Validation"</p>
+                        <p class="text-small">Checkpoints that ensure specifications remain complete, consistent, and implementable.</p>
+                        <button style="background: transparent; border: none; font-size: 2em; cursor: pointer; margin-top: 10px;" onclick="openPillarModal('gates')">💡</button>
+                    </div>
+                </div>
+                <aside class="notes">
+                    The three pillars: Constitution (laws), Contracts (interfaces), Guardrails & Gates (validation). Together they prevent drift.
+                </aside>
+            </section>
+
+            <!-- Slide: Constitution -->
+            <section>
+                <h2>Pillar 1: The Constitution</h2>
+                <p class="text-gray">Codifying Architectural Intent</p>
+                
+                <div class="mt-2" style="max-width: 900px; margin: 0 auto; background: var(--color-dark); border: 4px solid var(--color-navy); border-radius: 12px; padding: 30px;">
+                    <div class="fragment fade-right stack-layer" style="border:none; margin: 10px 0;">
+                        <span class="badge" style="background:var(--color-navy); margin:0;">Article I</span>
+                        <div class="text-left">
+                            <h4 style="margin:0;">Library-First Principle</h4>
+                            <p class="text-small" style="margin:0;">"No code exists without a defined interface."</p>
+                        </div>
+                        <i data-feather="package" class="text-navy icon-medium" style="margin-left: auto;"></i>
+                    </div>
+
+                    <div class="fragment fade-right stack-layer" style="border:none; margin: 10px 0;">
+                        <span class="badge" style="background:var(--color-navy); margin:0;">Article III</span>
+                        <div class="text-left">
+                            <h4 style="margin:0;">Test-First Imperative</h4>
+                            <p class="text-small" style="margin:0;">"Tests are the first consumer of the interface."</p>
+                        </div>
+                        <i data-feather="check-circle" class="text-navy icon-medium" style="margin-left: auto;"></i>
+                    </div>
+
+                    <div class="fragment fade-right stack-layer" style="border:none; margin: 10px 0;">
+                        <span class="badge" style="background:var(--color-navy); margin:0;">Article VIII</span>
+                        <div class="text-left">
+                            <h4 style="margin:0;">Anti-Abstraction Mandate</h4>
+                            <p class="text-small" style="margin:0;">"Prefer duplication over premature abstraction."</p>
+                        </div>
+                        <i data-feather="minimize-2" class="text-navy icon-medium" style="margin-left: auto;"></i>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Architectural laws that never change. Small, strict, non-negotiable.
+                </aside>
+            </section>
+
+            <!-- Slide: Contracts -->
+            <section>
+                <h2>Pillar 2: Executable Contracts</h2>
+                <div class="flow-diagram mt-2">
+                    <div class="flow-box fragment">
+                        <i data-feather="file-text" class="icon-medium text-gray"></i>
+                        <h4>Human Intent</h4>
+                        <p class="text-small">spec.md</p>
+                    </div>
+                    <div class="flow-arrow fragment">→</div>
+                    <div class="flow-box fragment" style="border-color: var(--color-green); background: rgba(22, 163, 74, 0.1);">
+                        <i data-feather="code" class="icon-medium text-green"></i>
+                        <h4 class="text-green">Machine Spec</h4>
+                        <p class="text-small">openapi.yaml</p>
+                    </div>
+                    <div class="flow-arrow fragment">→</div>
+                    <div class="flow-box fragment">
+                        <i data-feather="server" class="icon-medium text-gray"></i>
+                        <h4>Generated Stubs</h4>
+                        <p class="text-small">Interface & DTOs</p>
+                    </div>
+                </div>
+                
+                <div class="fragment mt-2 problem-card" style="border-left-color: var(--color-green); background: rgba(22, 163, 74, 0.1);">
+                    <div class="text-left">
+                        <i data-feather="shield-check" class="text-green"></i> <strong>Key Outcome:</strong>
+                        <p style="margin: 10px 0 0 0;">The AI never "guesses" the API structure. It implements a strict contract.</p>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Executable specs: the AI doesn’t guess the API—it implements the contract.
+                </aside>
+            </section>
+
+            <!-- Slide: Templates / Constraints -->
+            <section>
+                <h2>Pillar 3: Guardrails & Gates</h2>
+                <div class="split-container mt-2">
+                    <div class="split-left">
+                        <div class="text-center">
+                            <i data-feather="list" class="icon-large text-navy"></i>
+                            <h3 style="margin-top: 10px;">The Acceptance Gate</h3>
+                        </div>
+                    </div>
+                    <div class="split-right text-left">
+                        <div class="fragment fade-up stack-layer" style="border-color: var(--color-green);background: transparent;">
+                            <i data-feather="check-square" class="text-green"></i>
+                            <span style="font-size: 1.2em;">No <code>[NEEDS CLARIFICATION]</code> markers</span>
+                        </div>
+                        <div class="fragment fade-up stack-layer" style="border-color: var(--color-green);background: transparent;">
+                            <i data-feather="check-square" class="text-green"></i>
+                            <span style="font-size: 1.2em;">Resource cleanup validated</span>
+                        </div>
+                        <div class="fragment fade-up stack-layer" style="border-color: var(--color-green);background: transparent;">
+                            <i data-feather="check-square" class="text-green"></i>
+                            <span style="font-size: 1.2em;">Constitutional checks passed</span>
+                        </div>
+                        <div class="fragment fade-up stack-layer" style="border-color: var(--color-green);background: transparent;">
+                            <i data-feather="check-square" class="text-green"></i>
+                            <span style="font-size: 1.2em;">Tests are Green</span>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">
+                    A checklist the agent must satisfy: no ambiguous specs, cleanup validated, constitution enforced, tests green.
+                </aside>
+            </section>
+
+            <!-- Section 6: Closing -->
+            <section>
+                <div class="split-container">
+                    <div class="split-left">
+                        <h2>Your Move</h2>
+                        <div class="action-card mt-2 fragment fade-right">
+                            <h4 style="margin: 0;" class="text-white"><i data-feather="terminal" style="margin-right: 10px;"></i> Start Small</h4>
+                            <p class="text-small text-white" style="margin: 5px 0 0 35px;">Build <strong>one</strong> high-value feature with spec-kit.</p>
+                        </div>
+                        <div class="action-card mt-1 fragment fade-right">
+                            <h4 style="margin: 0;" class="text-white"><i data-feather="file-text" style="margin-right: 10px;"></i> Document</h4>
+                            <p class="text-small text-white" style="margin: 5px 0 0 35px;">Create a <code>constitution.md</code> with 5 core rules.</p>
+                        </div>
+                        <div class="action-card mt-1 fragment fade-right">
+                            <h4 style="margin: 0;" class="text-white"><i data-feather="search" style="margin-right: 10px;"></i> Shift Left</h4>
+                            <p class="text-small text-white" style="margin: 5px 0 0 35px;">Stop reviewing code. Start reviewing specifications.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="split-right text-center">
+                        <i data-feather="target" class="icon-large text-red"></i>
+                        <h3 class="mt-2 text-navy">The Mandate</h3>
+                        <p style="font-size: 1.4em; line-height: 1.4;">"Specs are the new source code.<br>Master them to architect the future."</p>
+                        
+                        <div class="mt-2" style="border-top: 1px solid var(--color-gray); padding-top: 20px;">
+                            <p class="text-gray text-small">Live Demo Next →</p>
+                            <p><strong>https://shibicr93.github.io/agentcon-sdd/</strong></p>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Three actions: start small with one feature using spec-kit; write a constitution.md with five rules; stop reviewing code and start reviewing specs. Close with the mandate: “Specs are the new source code. Master them to architect the future.”
+                </aside>
+            </section>
+            
         </div>
     </div>
+
+    <!-- Reveal.js core -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/reveal.js"></script>
     
-    <div id="qrModal" class="qr-modal">
-        <div class="qr-content">
-            <img src="the-spec-anchored-mandate-stop-vibe-coding-and-_ramachandran_1093671_feedback-code.png" alt="Feedback QR Code">
-            <p style="font-size: 1.5rem; color: #333; margin-bottom: 20px;">Scan to provide feedback</p>
-            <button onclick="toggleQR()" class="qr-close">Close</button>
-        </div>
-    </div>
+    <!-- Reveal.js plugins -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/plugin/markdown/markdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/plugin/notes/notes.js"></script>
     
+    <!-- Highlight.js for syntax highlighting -->
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/languages/java.min.js"></script>
+    
+    <!-- Initialize Reveal.js -->
     <script>
-        function toggleQR() {
-            const modal = document.getElementById('qrModal');
-            modal.classList.toggle('open');
+        Reveal.initialize({
+            hash: true,
+            center: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            
+            // Display controls
+            controls: true,
+            progress: true,
+            history: true,
+            
+            // Slide configuration
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            
+            // Plugin configuration
+            plugins: [
+                RevealMarkdown,
+                RevealHighlight,
+                RevealNotes
+            ],
+            
+            // Highlight.js configuration
+            highlight: {
+                highlightOnLoad: true,
+                escapeHTML: false
+            }
+        });
+        
+        // Initialize Feather Icons when slides load
+        Reveal.on('ready', () => {
+            feather.replace();
+        });
+        
+        // Re-initialize icons on slide change (for lazy-loaded slides)
+        Reveal.on('slidechanged', () => {
+            feather.replace();
+        });
+        
+        // Pillar modal functionality
+        function openPillarModal(pillar) {
+            const modal = document.getElementById(`pillar-modal-${pillar}`);
+            if (modal) {
+                modal.classList.add('open');
+            }
         }
         
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                const modal = document.getElementById('qrModal');
+        function closePillarModal(pillar) {
+            const modal = document.getElementById(`pillar-modal-${pillar}`);
+            if (modal) {
                 modal.classList.remove('open');
+            }
+        }
+        
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.pillar-modal.open').forEach(m => {
+                    m.classList.remove('open');
+                });
+            }
+        });
+        
+        // Close modal on outside click
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('pillar-modal')) {
+                e.target.classList.remove('open');
             }
         });
     </script>
+    
+    <!-- Pillar Example Modals -->
+    <div id="pillar-modal-constitution" class="pillar-modal">
+        <div class="pillar-modal-content">
+            <button class="pillar-modal-close" onclick="closePillarModal('constitution')">×</button>
+            <div class="pillar-modal-header">Example: Constitution</div>
+            <div style="font-size: 0.85em; line-height: 1.6;">
+                <h4 style="color: var(--color-navy-light); margin-top: 0;">Article I: Library-First Principle</h4>
+                <p>"Every feature must begin as a standalone library—no exceptions."</p>
+                
+                <h4 style="color: var(--color-navy-light);">Article III: Test-First Imperative</h4>
+                <p>"Tests are the first consumer of the interface. No implementation code without failing tests."</p>
+                
+                <h4 style="color: var(--color-navy-light);">Article VIII: Anti-Abstraction Mandate</h4>
+                <p>"Prefer duplication over premature abstraction. Start simple, add complexity only when proven necessary."</p>
+                
+                <p style="margin-top: 20px; color: var(--color-green); font-style: italic;">The constitution never changes. It shapes ALL code generation.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div id="pillar-modal-contracts" class="pillar-modal">
+        <div class="pillar-modal-content">
+            <button class="pillar-modal-close" onclick="closePillarModal('contracts')">×</button>
+            <div class="pillar-modal-header">Example: Executable Contracts</div>
+            <div style="font-size: 0.85em; line-height: 1.6;">
+                <h4 style="color: var(--color-navy-light); margin-top: 0;">OpenAPI Specification</h4>
+                <pre style="background: var(--color-dark); border: 1px solid var(--color-gray); padding: 10px; margin: 10px 0;"><code>GET /pets/{petId}
+Response 200:
+  {
+    "id": 1,
+    "name": "Fluffy",
+    "status": "available"
+  }</code></pre>
+                
+                <h4 style="color: var(--color-navy-light);">Generated Stub (from contract)</h4>
+                <pre style="background: var(--color-dark); border: 1px solid var(--color-green); padding: 10px; margin: 10px 0;"><code>interface Pet {
+  id: number;
+  name: string;
+  status: 'available' | 'pending' | 'sold';
+}</code></pre>
+                
+                <p style="margin-top: 20px; color: var(--color-green); font-style: italic;">✓ The AI implements this contract, not guesses it.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div id="pillar-modal-gates" class="pillar-modal">
+        <div class="pillar-modal-content">
+            <button class="pillar-modal-close" onclick="closePillarModal('gates')">×</button>
+            <div class="pillar-modal-header">Example: Guardrails & Gates</div>
+            <div style="font-size: 0.85em; line-height: 1.6;">
+                <h4 style="color: var(--color-navy-light); margin-top: 0;">Pre-Implementation Checklist</h4>
+                <ul style="margin: 10px 0;">
+                    <li>☐ Using ≤3 projects?</li>
+                    <li>☐ No future-proofing?</li>
+                    <li>☐ Contracts defined?</li>
+                    <li>☐ No ambiguous requirements?</li>
+                </ul>
+                
+                <h4 style="color: var(--color-navy-light);">Consistency Validation</h4>
+                <p><strong>Before implementation:</strong> AI analyzes spec for contradictions, gaps, and unclear acceptance criteria.</p>
+                
+                <p style="margin-top: 20px; color: var(--color-green); font-style: italic;">⚠️ Gates prevent bad specifications from generating bad code.</p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
